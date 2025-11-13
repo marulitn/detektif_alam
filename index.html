@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detektif Alam: Misi Menjaga Bumi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+      font-family: 'Press Start 2P', cursive;
+      background-color: #c8f4ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* ===== Menu Utama ===== */
+    #mainMenu {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('assets/bg1.gif') center/cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      z-index: 2;
+    }
+
+    h1 {
+      color: #f8a9c4;
+      text-shadow: 4px 4px #243b6b;
+      font-size: 36px;
+      margin-bottom: 60px;
+      line-height: 1.5;
+    }
+
+    #startBtn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+
+    #startBtn:hover {
+      transform: scale(1.05);
+    }
+
+    #startBtn img {
+      width: 250px;
+    }
+
+    /* ===== Halaman Intro ===== */
+    #introScreen {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url('assets/bg2.gif') center/cover no-repeat;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 3;
+      text-align: center;
+    }
+
+    .intro-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      padding: 40px;
+    }
+
+    #introCharacter  {
+      width: 400px;              /* Membesarkan karakter */
+	  height: 400px;
+	  transform: translateY(130px); /* Turunkan posisi ke bawah sedikit */
+    }
+
+    .intro-text {
+      max-width: 520px;
+      color: #5e3c7b;
+      font-size: 14px;
+      line-height: 1.8;
+      text-align: left;
+    }
+	
+	#goBtn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+
+    #goBtn:hover {
+      transform: scale(1.05);
+    }
+
+    #goBtn img {
+      width: 250px;
+    }
+
+    /* ===== Canvas Game ===== */
+    #gameCanvas {
+      display: none;
+      background: linear-gradient(#4fc3f7, #1b5e20);
+    }
+	
+	#levelMap {
+	  position: absolute;
+	  width: 100%;
+	  height: 100%;
+	  background-color: #000;
+	  display: none;
+	  align-items: center;
+	  justify-content: center;
+	  z-index: 4;
+	}
+
+	#levelImage {
+	  width: 80%;
+	  max-width: 900px;
+	  border-radius: 16px;
+	  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+	  animation: fadeIn 1s ease;
+	}
+
+	@keyframes fadeIn {
+	  from { opacity: 0; transform: scale(0.95); }
+	  to { opacity: 1; transform: scale(1); }
+	}
+
+	#levelMap {
+	  position: absolute;
+	  width: 100%;
+	  height: 100%;
+	  background: #000;
+	  display: none;
+	  align-items: center;
+	  justify-content: center;
+	  z-index: 4;
+	}
+
+	.level-container {
+	  position: relative;
+	  width: 80%;
+	  max-width: 900px;
+	}
+
+	#levelImage {
+	  width: 100%;
+	  border-radius: 16px;
+	  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+	}
+
+	.level-buttons {
+	  position: absolute;
+	  top: 0;
+	  left: 0;
+	  width: 100%;
+	  height: 100%;
+	}
+
+	.level-btn {
+	  position: absolute;
+	  transform: translate(-50%, -50%);
+	  background-color: rgba(255, 255, 0, 0.85);
+	  border: 3px solid #444;
+	  font-family: 'Press Start 2P', cursive;
+	  font-size: 12px;
+	  padding: 12px 20px;
+	  border-radius: 12px;
+	  cursor: pointer;
+	  transition: all 0.2s ease;
+	}
+
+	.level-btn:hover {
+	  background-color: #ffcc00;
+	  transform: translate(-50%, -50%) scale(1.1);
+	}
+
+	#backToLevelBtn {
+	  position: absolute;
+	  top: 20px;
+	  left: 20px;
+	  padding: 10px 20px;
+	  background-color: rgba(255, 235, 59, 0.9);
+	  border: 3px solid #444;
+	  border-radius: 12px;
+	  font-family: 'Press Start 2P', cursive;
+	  font-size: 10px;
+	  cursor: pointer;
+	  z-index: 5;
+	  box-shadow: 0 4px #bfa500;
+	  transition: all 0.2s ease;
+	}
+
+	#backToLevelBtn:hover {
+	  background-color: #ffcc00;
+	  transform: scale(1.05);
+	}
+
+	#levelIntro {
+	  position: absolute;
+	  width: 100%;
+	  height: 100%;
+	  background: black;
+	  display: none;
+	  align-items: center;
+	  justify-content: center;
+	  z-index: 5;
+	}
+
+	#levelVideo {
+	  max-width: 90%;
+	  max-height: 90%;
+	  border-radius: 12px;
+	  box-shadow: 0 0 30px rgba(0,0,0,0.6);
+	}
+
+	#dialogBox {
+	  position: absolute;
+	  bottom: 100px;
+	  left: 50%;
+	  transform: translateX(-50%);
+	  background: rgba(255, 255, 255, 0.95);
+	  border: 3px solid #333;
+	  border-radius: 20px;
+	  padding: 20px 30px;
+	  max-width: 600px;
+	  font-family: 'Press Start 2P', cursive;
+	  font-size: 10px;
+	  color: #222;
+	  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+	  z-index: 6;
+	  cursor: pointer;
+	  position: absolute;
+	}
+
+	#dialogBox::after {
+	  content: "";
+	  position: absolute;
+	  bottom: -20px;
+	  left: 50%;
+	  transform: translateX(-50%);
+	  width: 0;
+	  height: 0;
+	  border: 10px solid transparent;
+	  border-top-color: rgba(255, 255, 255, 0.95);
+	  border-bottom: 0;
+	  margin-left: -10px;
+	}
+
+	#dialogText {
+	  line-height: 1.6;
+	  text-align: center;
+	}
+
+	#quizPopup {
+	  position: absolute;
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%);
+	  background: rgba(255,255,255,0.95);
+	  border: 3px solid #333;
+	  border-radius: 16px;
+	  padding: 20px;
+	  z-index: 10;
+	  display: none;
+	  text-align: center;
+	  box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+	}
+
+	#quizContainer {
+	  display: grid;
+	  grid-template-columns: repeat(3, 1fr);
+	  gap: 12px;
+	  margin-bottom: 16px;
+	}
+
+	#quizContainer img {
+	  width: 100px;
+	  height: 100px;
+	  border: 3px solid transparent;
+	  border-radius: 12px;
+	  cursor: pointer;
+	  transition: transform 0.1s, border-color 0.2s;
+	}
+
+	#quizContainer img:hover {
+	  transform: scale(1.05);
+	  border-color: #888;
+	}
+
+	#closeQuizBtn {
+	  background-color: #ffeb3b;
+	  border: 2px solid #444;
+	  border-radius: 8px;
+	  font-family: 'Press Start 2P', cursive;
+	  font-size: 10px;
+	  padding: 10px 20px;
+	  cursor: pointer;
+	}
+	
+	#quizPopup h2 {
+	  font-family: 'Press Start 2P', cursive;
+	  font-size: 12px;
+	  color: #222;
+	  margin-bottom: 16px;
+	  text-align: center;
+	  line-height: 1.5;
+	}
+
+	#textInputPopup {
+	  position: absolute;
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%);
+	  background: rgba(255,255,255,0.95);
+	  border: 3px solid #333;
+	  border-radius: 16px;
+	  padding: 20px 30px;
+	  z-index: 10;
+	  display: none;
+	  text-align: center;
+	  box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+	}
+
+	#textInputPopup h2 {
+	  font-family: 'Press Start 2P', cursive;
+	  font-size: 12px;
+	  margin-bottom: 14px;
+	  color: #222;
+	}
+
+	#answerInput {
+	  width: 80%;
+	  font-size: 14px;
+	  padding: 8px;
+	  border-radius: 8px;
+	  border: 2px solid #888;
+	  text-align: center;
+	}
+
+	#submitAnswer, #closeTextPopup {
+	  margin-top: 12px;
+	  background-color: #ffeb3b;
+	  border: 2px solid #444;
+	  border-radius: 8px;
+	  font-family: 'Press Start 2P', cursive;
+	  font-size: 10px;
+	  padding: 8px 16px;
+	  cursor: pointer;
+	}
+
+	#feedbackText {
+	  font-size: 12px;
+	  margin-top: 10px;
+	  color: #333;
+	}
+
+
+  </style>
+</head>
+
+<body>
+  <!-- Menu Utama -->
+  <div id="mainMenu">
+    <h1>“DETEKTIF ALAM:<br>MISI MENJAGA BUMI”</h1>
+    <button id="startBtn">
+      <img src="assets/start_button.png" alt="Start Button">
+    </button>
+  </div>
+
+  <!-- Intro Screen -->
+  <div id="introScreen">
+    <div class="intro-container">
+	  <canvas id="introCharacter" width="400" height="400"></canvas>
+      <div class="intro-text">
+        <p>
+          Halo, Detektif Cilik! Aku <b>Daniel</b> si petualang cilik.<br>
+          Hari ini kita akan menyelidiki kekayaan alam Indonesia.<br>
+          Tapi hati-hati ya, tidak semua sumber daya bisa diperbarui!<br>
+          <b>Siap jadi detektif alam?</b> <p> Mulai petualangan? </p>
+        </p>
+        <button id="goBtn">
+			<img src="assets/letsgo_button.png" alt="Start Button">
+		</button>
+      </div>
+    </div>
+  </div>
+	<!-- Halaman Peta Level -->
+	<div id="levelMap" style="display: none;">
+	  <div class="level-container">
+		<img src="assets/level.png" id="levelImage" alt="Peta Level">
+		<div class="level-buttons">
+		  <button class="level-btn" data-level="1" style="top: 35%; left: 25%;">Pilih</button>
+		  <button class="level-btn" data-level="2" style="top: 35%; left: 75%;">Pilih</button>
+		  <button class="level-btn" data-level="3" style="top: 85%; left: 25%;">Pilih</button>
+		  <button class="level-btn" data-level="4" style="top: 85%; left: 75%;">Pilih</button>
+		</div>
+	  </div>
+	</div>
+
+	<!-- Video intro tiap level -->
+	<div id="levelIntro" style="display: none;">
+	  <video id="levelVideo" width="900" height="600" autoplay></video>
+	</div>
+
+  <!-- Canvas Game -->
+  <canvas id="gameCanvas" width="900" height="600"></canvas>
+  
+  <!-- Balon dialog -->
+  <div id="dialogBox" style="display: none;">
+	<div id="dialogText"></div>
+  </div>
+  
+  <!-- Popup kuis gambar -->
+	<div id="quizPopup" style="display: none;">
+	  <h2 id="quizTitle">Judul Kuis</h2>
+	  <div id="quizContainer"></div>
+	  <button id="closeQuizBtn">Tutup</button>
+	</div>
+
+
+<!-- Popup input jawaban level 3 -->
+<div id="textInputPopup" style="display: none;">
+  <h2 id="textQuestion">Pertanyaan</h2>
+  <input type="text" id="answerInput" placeholder="Ketik jawabanmu di sini">
+  <button id="submitAnswer">Kirim</button>
+  <p id="feedbackText"></p>
+  <button id="closeTextPopup">Tutup</button>
+</div>
+
+
+  <button id="backToLevelBtn" style="display: none;">← Kembali</button>
+
+  <!-- Script Game -->
+  <script>
+    const startBtn = document.getElementById('startBtn');
+    const mainMenu = document.getElementById('mainMenu');
+    const introScreen = document.getElementById('introScreen');
+    const goBtn = document.getElementById('goBtn');
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+	const backBtn = document.getElementById('backToLevelBtn');
+	const levelIntro = document.getElementById('levelIntro');
+	const levelVideo = document.getElementById('levelVideo');
+	const dialogBox = document.getElementById('dialogBox');
+	const dialogText = document.getElementById('dialogText');
+	const quizTitle = document.getElementById('quizTitle');
+
+
+	
+	// ==== ANIMASI IDLE KARAKTER DI INTRO ====
+	const introCanvas = document.getElementById('introCharacter');
+	const introCtx = introCanvas.getContext('2d');
+
+	let idleFrames = [];
+	let currentFrame = 0;
+	let frameDelay = 150; // kecepatan animasi (ms)
+	let lastFrameTime = 0;
+
+	function loadIdleFrames() {
+	  for (let i = 1; i < 10; i++) {
+		let img = new Image();
+		img.src = `assets/sprite/idle/Idle (${i}).png`;
+		idleFrames.push(img);
+	  }
+	}
+
+	function drawIdleAnimation(timestamp) {
+	  if (idleFrames.length === 0) return;
+
+	  if (timestamp - lastFrameTime > frameDelay) {
+		currentFrame = (currentFrame + 1) % idleFrames.length;
+		lastFrameTime = timestamp;
+	  }
+
+	  introCtx.clearRect(0, 0, introCanvas.width, introCanvas.height);
+	  let img = idleFrames[currentFrame];
+	  introCtx.drawImage(img, 0, 0, introCanvas.width, introCanvas.height);
+
+	  requestAnimationFrame(drawIdleAnimation);
+	}
+
+	loadIdleFrames();
+	requestAnimationFrame(drawIdleAnimation);
+
+
+    startBtn.addEventListener('click', () => {
+      mainMenu.style.display = 'none';
+      introScreen.style.display = 'flex';
+    });
+
+    goBtn.addEventListener('click', () => {
+	  introScreen.style.display = 'none';
+	  levelMap.style.display = 'flex';
+
+	  // Pilih level
+		document.querySelectorAll('.level-btn').forEach(btn => {
+		  btn.addEventListener('click', () => {
+			const selectedLevel = btn.getAttribute('data-level');
+			console.log("Level dipilih:", selectedLevel);
+
+			// Sembunyikan peta level, tampilkan video
+			levelMap.style.display = 'none';
+			levelIntro.style.display = 'flex';
+			levelVideo.src = `assets/intro_level/level${selectedLevel}.mp4`;
+			levelVideo.play();
+
+			// Setelah video selesai, lanjut ke game
+			levelVideo.onended = () => {
+			  levelIntro.style.display = 'none';
+			  canvas.style.display = 'block';
+			  startGame(selectedLevel);
+			};
+		  });
+		});
+
+
+	});
+
+
+    function startGame(level) {
+	  backBtn.style.display = 'block'; // tampilkan tombol kembali
+
+	  if (level == 1) {
+		startForestLevel();
+	  }else if (level == 2) {
+		startBeachLevel();
+	  }else if (level == 3) {
+		startMineLevel();
+	  }else if (level == 4) {
+		startVillageLevel();
+	  }else {
+		// Level lain sementara warna polos
+		canvas.style.display = 'block';
+		let player = { x: 400, y: 300, size: 30, speed: 4 };
+		let keys = {};
+		document.addEventListener('keydown', (e) => keys[e.key] = true);
+		document.addEventListener('keyup', (e) => keys[e.key] = false);
+		function gameLoop() {
+		  ctx.clearRect(0, 0, canvas.width, canvas.height);
+		  ctx.fillStyle = '#81c784';
+		  ctx.fillRect(0, 0, canvas.width, canvas.height);
+		  if (keys['ArrowUp']) player.y -= player.speed;
+		  if (keys['ArrowDown']) player.y += player.speed;
+		  if (keys['ArrowLeft']) player.x -= player.speed;
+		  if (keys['ArrowRight']) player.x += player.speed;
+		  ctx.fillStyle = '#f9ca24';
+		  ctx.beginPath();
+		  ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
+		  ctx.fill();
+		  requestAnimationFrame(gameLoop);
+		}
+		gameLoop();
+	  }
+
+	  // Tombol kembali
+	  backBtn.onclick = () => {
+		canvas.style.display = 'none';
+		backBtn.style.display = 'none';
+		levelMap.style.display = 'flex';
+	  };
+	}
+
+
+	function startForestLevel() {
+	  const bg = new Image();
+	  bg.src = 'assets/level_bg/level1.jpg';
+
+	  const objects = [
+		{ x: 200, y: 100, w: 200, h: 150, img: 'assets/objects/tree.png', text: "Kalau ditebang, apakah bisa tumbuh lagi?" },
+		{ x: 600, y: 175, w: 150, h: 80, img: 'assets/objects/deer.png', text: "Apakah rusa termasuk sumber daya alam?" },
+		{ x: 300, y: 400, w: 150, h: 120, img: 'assets/objects/lake.png', text: "Air berasal dari mana?" },
+	  ];
+
+	  // === Sprite karakter Daniel ===
+	  const idleFrames = [];
+	  const walkFrames = [];
+	  for (let i = 1; i <= 8; i++) {
+		const idleImg = new Image();
+		idleImg.src = `assets/sprite/idle/Idle (${i}).png`;
+		idleFrames.push(idleImg);
+
+		const walkImg = new Image();
+		walkImg.src = `assets/sprite/run/Run (${i}).png`;
+		walkFrames.push(walkImg);
+	  }
+
+	  let player = {
+		x: 400,
+		y: 200,
+		size: 60,
+		speed: 3,
+		dir: "right",
+		moving: false,
+		frameIndex: 0,
+		frameTimer: 0
+	  };
+
+	  let keys = {};
+	  let activeDialog = null;
+
+	  document.addEventListener('keydown', (e) => keys[e.key] = true);
+	  document.addEventListener('keyup', (e) => keys[e.key] = false);
+
+	  function openDialog(text) {
+		dialogText.innerHTML = text;
+		dialogBox.style.display = 'block';
+	  }
+
+	  function closeDialog() {
+		dialogBox.style.display = 'none';
+		activeDialog = null;
+	  }
+
+	  dialogBox.addEventListener('click', closeDialog);
+
+	// === Gambar karakter (sprite + arah) ===
+	  function drawPlayer() {
+		let frameSet = player.moving ? walkFrames : idleFrames;
+		player.frameTimer++;
+		if (player.frameTimer > 10) {
+		  player.frameIndex = (player.frameIndex + 1) % frameSet.length;
+		  player.frameTimer = 0;
+		}
+
+		const img = frameSet[player.frameIndex];
+		const w = player.size;
+		const h = player.size;
+
+		ctx.save();
+		if (player.dir === "left") {
+		  ctx.scale(-1, 1);
+		  ctx.drawImage(img, -player.x - w / 2, player.y - h / 2, w, h);
+		} else {
+		  ctx.drawImage(img, player.x - w / 2, player.y - h / 2, w, h);
+		}
+		ctx.restore();
+	  }
+
+	  function gameLoop() {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+
+		// === Gerakan pemain ===
+		player.moving = false;
+		if (keys['ArrowUp']) { player.y -= player.speed; player.moving = true; }
+		if (keys['ArrowDown']) { player.y += player.speed; player.moving = true; }
+		if (keys['ArrowLeft']) { player.x -= player.speed; player.moving = true; player.dir = "left"; }
+		if (keys['ArrowRight']) { player.x += player.speed; player.moving = true; player.dir = "right"; }
+
+		// === Gambar objek dan deteksi interaksi ===
+		objects.forEach(obj => {
+		  let img = new Image();
+		  img.src = obj.img;
+		  ctx.drawImage(img, obj.x, obj.y, obj.w, obj.h);
+
+		  let dx = player.x - (obj.x + obj.w / 2);
+		  let dy = player.y - (obj.y + obj.h / 2);
+		  let dist = Math.sqrt(dx * dx + dy * dy);
+
+		  if (dist < 60 && !activeDialog) {
+			ctx.fillStyle = '#fff';
+			ctx.font = '10px "Press Start 2P"';
+			ctx.fillText('Tekan [E]', obj.x, obj.y - 10);
+
+			if (keys['e'] || keys['E']) {
+			  activeDialog = obj.text;
+			  openDialog(obj.text);
+			}
+		  }
+		});
+
+		// Gambar pemain (lingkaran sementara)
+		drawPlayer();
+
+		requestAnimationFrame(gameLoop);
+	  }
+
+	  gameLoop();
+	}
+
+	function startBeachLevel() {
+	  const bg = new Image();
+	  bg.src = 'assets/level_bg/level2.jpg';
+
+	  const objects = [
+		{ 
+		  x: 250, y: 140, w: 200, h: 160, 
+		  img: 'assets/objects/red_boat.png', 
+		  title: "Sumber Daya Alam Dapat Diperbarui",
+		  correct: [1,3,4,5,9], 
+		  text: "Pilih 5 gambar yang menunjukkan sumber daya alam yang dapat diperbarui!" 
+		},
+		{ 
+		  x: 550, y: 220, w: 200, h: 160, 
+		  img: 'assets/objects/green_boat.png', 
+		  title: "Sumber Daya Alam Tidak Dapat Diperbarui",
+		  correct: [2,6,7,8], 
+		  text: "Pilih 4 gambar yang menunjukkan sumber daya alam yang tidak dapat diperbarui!" 
+		}
+	  ];
+
+	  const quizPopup = document.getElementById('quizPopup');
+	  const quizContainer = document.getElementById('quizContainer');
+	  const closeQuizBtn = document.getElementById('closeQuizBtn');
+
+	  // Load sprite Daniel (pakai yang sama dengan level 1)
+	  const idleFrames = [];
+	  const walkFrames = [];
+	  for (let i = 1; i <= 8; i++) {
+		const idleImg = new Image();
+		idleImg.src = `assets/sprite/idle/Idle (${i}).png`;
+		idleFrames.push(idleImg);
+
+		const walkImg = new Image();
+		walkImg.src = `assets/sprite/run/Run (${i}).png`;
+		walkFrames.push(walkImg);
+	  }
+
+	  let player = {
+		x: 400,
+		y: 400,
+		size: 60,
+		speed: 3,
+		dir: "right",
+		moving: false,
+		frameIndex: 0,
+		frameTimer: 0
+	  };
+
+	  let keys = {};
+	  let activeDialog = null;
+	  let currentObject = null;
+
+	  document.addEventListener('keydown', (e) => keys[e.key] = true);
+	  document.addEventListener('keyup', (e) => keys[e.key] = false);
+
+	  function openDialog(text) {
+		dialogText.innerHTML = text + "<br><br><small>(Tekan [E] lagi untuk mulai)</small>";
+		dialogBox.style.display = 'block';
+	  }
+
+	  function closeDialog() {
+		dialogBox.style.display = 'none';
+		activeDialog = null;
+	  }
+
+	  dialogBox.addEventListener('click', closeDialog);
+
+	  function openQuiz(obj) {
+		  dialogBox.style.display = 'none';
+		  quizPopup.style.display = 'block';
+		  quizContainer.innerHTML = "";
+
+		  // Atur judul kuis berdasarkan teks objek
+		  quizTitle.textContent = obj.title || obj.text;
+
+
+		  for (let i = 1; i <= 9; i++) {
+			const img = document.createElement('img');
+			img.src = `assets/quiz_images/img (${i}).png`;
+			img.dataset.index = i;
+
+			img.onclick = () => {
+			  const isCorrect = obj.correct.includes(i);
+			  img.style.borderColor = isCorrect ? "green" : "red";
+			};
+
+			quizContainer.appendChild(img);
+		  }
+		}
+
+
+	  closeQuizBtn.onclick = () => {
+		quizPopup.style.display = 'none';
+	  };
+
+	  function drawPlayer() {
+		let frameSet = player.moving ? walkFrames : idleFrames;
+		player.frameTimer++;
+		if (player.frameTimer > 10) {
+		  player.frameIndex = (player.frameIndex + 1) % frameSet.length;
+		  player.frameTimer = 0;
+		}
+
+		const img = frameSet[player.frameIndex];
+		const w = player.size;
+		const h = player.size;
+
+		ctx.save();
+		if (player.dir === "left") {
+		  ctx.scale(-1, 1);
+		  ctx.drawImage(img, -player.x - w / 2, player.y - h / 2, w, h);
+		} else {
+		  ctx.drawImage(img, player.x - w / 2, player.y - h / 2, w, h);
+		}
+		ctx.restore();
+	  }
+
+	  function gameLoop() {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+
+		// Gerakan pemain
+		player.moving = false;
+		if (keys['ArrowUp']) { player.y -= player.speed; player.moving = true; }
+		if (keys['ArrowDown']) { player.y += player.speed; player.moving = true; }
+		if (keys['ArrowLeft']) { player.x -= player.speed; player.moving = true; player.dir = "left"; }
+		if (keys['ArrowRight']) { player.x += player.speed; player.moving = true; player.dir = "right"; }
+
+		// Gambar objek dan interaksi
+		objects.forEach(obj => {
+		  let img = new Image();
+		  img.src = obj.img;
+		  ctx.drawImage(img, obj.x, obj.y, obj.w, obj.h);
+
+		  let dx = player.x - (obj.x + obj.w / 2);
+		  let dy = player.y - (obj.y + obj.h / 2);
+		  let dist = Math.sqrt(dx * dx + dy * dy);
+
+		  if (dist < 60 && !activeDialog && quizPopup.style.display === "none") {
+			ctx.fillStyle = '#fff';
+			ctx.font = '10px "Press Start 2P"';
+			ctx.fillText('Tekan [E]', obj.x, obj.y - 10);
+
+			if (keys['e'] || keys['E']) {
+			  activeDialog = obj.text;
+			  currentObject = obj;
+			  openDialog(obj.text);
+			}
+		  } 
+		  else if (dist < 60 && activeDialog && (keys['e'] || keys['E'])) {
+			openQuiz(currentObject);
+			activeDialog = null;
+		  }
+		});
+
+		// Gambar pemain
+		drawPlayer();
+
+		requestAnimationFrame(gameLoop);
+	  }
+
+	  gameLoop();
+	}
+
+	function startMineLevel() {
+	  // === Tampilkan canvas & latar ===
+	  canvas.style.display = 'block';
+	  canvas.style.zIndex = '1';
+
+	  const bg = new Image();
+	  bg.src = 'assets/level_bg/level3.jpg';
+
+	  // === Objek interaktif ===
+	  const object = {
+		x: 400, y: 300, w: 200, h: 150,
+		img: 'assets/objects/excavator.png',
+		question: "Tuliskan kata yang kamu dapatkan!",
+		answer: "ozon"
+	  };
+
+	  // === Elemen popup input teks ===
+	  const popup = document.getElementById('textInputPopup');
+	  const questionEl = document.getElementById('textQuestion');
+	  const answerInput = document.getElementById('answerInput');
+	  const feedbackText = document.getElementById('feedbackText');
+	  const submitBtn = document.getElementById('submitAnswer');
+	  const closeBtn = document.getElementById('closeTextPopup');
+
+	  // === Sprite Daniel ===
+	  const idleFrames = [], walkFrames = [];
+	  for (let i = 1; i <= 8; i++) {
+		const idleImg = new Image();
+		idleImg.src = `assets/sprite/idle/Idle (${i}).png`;
+		idleFrames.push(idleImg);
+
+		const walkImg = new Image();
+		walkImg.src = `assets/sprite/run/Run (${i}).png`;
+		walkFrames.push(walkImg);
+	  }
+
+	  let player = {
+		x: 400,
+		y: 200,
+		size: 60,
+		speed: 3,
+		dir: "right",
+		moving: false,
+		frameIndex: 0,
+		frameTimer: 0
+	  };
+
+	  // === Variabel kontrol ===
+	  let keys = {};
+	  let activeDialog = null;
+	  let canInteract = true;
+
+	  // === Event keyboard global ===
+	  window.addEventListener('keydown', e => keys[e.key] = true);
+	  window.addEventListener('keyup', e => keys[e.key] = false);
+
+	  // === Popup kontrol ===
+	  function openPopup() {
+		popup.style.display = 'block';
+		questionEl.textContent = object.question;
+		feedbackText.textContent = "";
+		answerInput.value = "";
+		answerInput.focus();
+	  }
+
+	  function closePopup() {
+		popup.style.display = 'none';
+		activeDialog = null;
+		keys = {}; // reset agar player tidak stuck
+	  }
+
+	  submitBtn.onclick = () => {
+		const userAnswer = answerInput.value.trim().toLowerCase();
+		if (userAnswer === object.answer.toLowerCase()) {
+		  feedbackText.style.color = "green";
+		  feedbackText.textContent = "Mari kita lindungi bumi! 🌎";
+		} else {
+		  feedbackText.style.color = "green";
+		  feedbackText.textContent = "Mari kita lindungi bumi! 🌎";
+		}
+	  };
+
+	  closeBtn.onclick = closePopup;
+
+	  // === Gambar sprite Daniel ===
+	  function drawPlayer() {
+		let frameSet = player.moving ? walkFrames : idleFrames;
+		player.frameTimer++;
+		if (player.frameTimer > 10) {
+		  player.frameIndex = (player.frameIndex + 1) % frameSet.length;
+		  player.frameTimer = 0;
+		}
+
+		const img = frameSet[player.frameIndex];
+		const w = player.size;
+		const h = player.size;
+
+		ctx.save();
+		if (player.dir === "left") {
+		  ctx.scale(-1, 1);
+		  ctx.drawImage(img, -player.x - w / 2, player.y - h / 2, w, h);
+		} else {
+		  ctx.drawImage(img, player.x - w / 2, player.y - h / 2, w, h);
+		}
+		ctx.restore();
+	  }
+
+	  // === Loop utama permainan ===
+	  function gameLoop() {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+
+		// Gerakan pemain
+		player.moving = false;
+		if (keys['ArrowUp']) { player.y -= player.speed; player.moving = true; }
+		if (keys['ArrowDown']) { player.y += player.speed; player.moving = true; }
+		if (keys['ArrowLeft']) { player.x -= player.speed; player.moving = true; player.dir = "left"; }
+		if (keys['ArrowRight']) { player.x += player.speed; player.moving = true; player.dir = "right"; }
+
+		// Gambar objek interaktif
+		const img = new Image();
+		img.src = object.img;
+		ctx.drawImage(img, object.x, object.y, object.w, object.h);
+
+		// Deteksi jarak interaksi
+		const dx = player.x - (object.x + object.w / 2);
+		const dy = player.y - (object.y + object.h / 2);
+		const dist = Math.sqrt(dx * dx + dy * dy);
+
+		if (dist < 70 && !activeDialog && popup.style.display === "none") {
+		  ctx.fillStyle = '#fff';
+		  ctx.font = '10px "Press Start 2P"';
+		  ctx.fillText('Tekan [E]', object.x, object.y - 10);
+
+		  if ((keys['e'] || keys['E']) && canInteract) {
+			canInteract = false;
+			activeDialog = true;
+			openPopup();
+
+			// cegah spam E
+			setTimeout(() => canInteract = true, 500);
+		  }
+		}
+
+		drawPlayer();
+		requestAnimationFrame(gameLoop);
+	  }
+
+	  setTimeout(gameLoop, 300); // beri waktu gambar termuat
+	}
+
+	function startVillageLevel() {
+	  // === Tampilkan canvas & latar ===
+	  canvas.style.display = 'block';
+	  canvas.style.zIndex = '1';
+
+	  const bg = new Image();
+	  bg.src = 'assets/level_bg/level4.jpg';
+
+	  // === Objek interaktif ===
+	  const object = {
+		x: 420, y: 500, w: 150, h: 100,
+		img: 'assets/objects/villager.png',
+		text: "Selamat detektif alam, kamu sudah menyelesaikan misi menjaga bumi! 🌎🌳"
+	  };
+
+	  // === Ambil elemen dialog umum ===
+	  const dialogBox = document.getElementById('dialogBox');
+	  const dialogText = document.getElementById('dialogText');
+
+	  // === Sprite Daniel ===
+	  const idleFrames = [], walkFrames = [];
+	  for (let i = 1; i <= 8; i++) {
+		const idleImg = new Image();
+		idleImg.src = `assets/sprite/idle/Idle (${i}).png`;
+		idleFrames.push(idleImg);
+
+		const walkImg = new Image();
+		walkImg.src = `assets/sprite/run/Run (${i}).png`;
+		walkFrames.push(walkImg);
+	  }
+
+	  // === Data player ===
+	  let player = {
+		x: 400,
+		y: 200,
+		size: 60,
+		speed: 3,
+		dir: "right",
+		moving: false,
+		frameIndex: 0,
+		frameTimer: 0
+	  };
+
+	  let keys = {};
+	  let activeDialog = null;
+	  let canInteract = true;
+
+	  // === Event keyboard global ===
+	  window.addEventListener('keydown', e => keys[e.key] = true);
+	  window.addEventListener('keyup', e => keys[e.key] = false);
+
+	  // === Fungsi dialog ===
+	  function openDialog(text) {
+		dialogText.innerHTML = text;
+		dialogBox.style.display = 'block';
+	  }
+
+	  function closeDialog() {
+		dialogBox.style.display = 'none';
+		activeDialog = null;
+		keys = {}; // reset agar tidak stuck
+	  }
+
+	  dialogBox.addEventListener('click', closeDialog);
+
+	  // === Gambar sprite player ===
+	  function drawPlayer() {
+		let frameSet = player.moving ? walkFrames : idleFrames;
+		player.frameTimer++;
+		if (player.frameTimer > 10) {
+		  player.frameIndex = (player.frameIndex + 1) % frameSet.length;
+		  player.frameTimer = 0;
+		}
+
+		const img = frameSet[player.frameIndex];
+		const w = player.size;
+		const h = player.size;
+
+		ctx.save();
+		if (player.dir === "left") {
+		  ctx.scale(-1, 1);
+		  ctx.drawImage(img, -player.x - w / 2, player.y - h / 2, w, h);
+		} else {
+		  ctx.drawImage(img, player.x - w / 2, player.y - h / 2, w, h);
+		}
+		ctx.restore();
+	  }
+
+	  // === Loop utama permainan ===
+	  function gameLoop() {
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
+		ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+
+		// Gerakan player
+		player.moving = false;
+		if (keys['ArrowUp']) { player.y -= player.speed; player.moving = true; }
+		if (keys['ArrowDown']) { player.y += player.speed; player.moving = true; }
+		if (keys['ArrowLeft']) { player.x -= player.speed; player.moving = true; player.dir = "left"; }
+		if (keys['ArrowRight']) { player.x += player.speed; player.moving = true; player.dir = "right"; }
+
+		// Gambar objek interaktif
+		const img = new Image();
+		img.src = object.img;
+		ctx.drawImage(img, object.x, object.y, object.w, object.h);
+
+		// Deteksi jarak interaksi
+		const dx = player.x - (object.x + object.w / 2);
+		const dy = player.y - (object.y + object.h / 2);
+		const dist = Math.sqrt(dx * dx + dy * dy);
+
+		if (dist < 70 && !activeDialog && dialogBox.style.display === "none") {
+		  ctx.fillStyle = '#fff';
+		  ctx.font = '10px "Press Start 2P"';
+		  ctx.fillText('Tekan [E]', object.x, object.y - 10);
+
+		  if ((keys['e'] || keys['E']) && canInteract) {
+			canInteract = false;
+			activeDialog = object.text;
+			openDialog(object.text);
+
+			// cegah spam E
+			setTimeout(() => canInteract = true, 500);
+		  }
+		}
+
+		drawPlayer();
+		requestAnimationFrame(gameLoop);
+	  }
+
+	  setTimeout(gameLoop, 300);
+	}
+
+
+  </script>
+</body>
+</html>
